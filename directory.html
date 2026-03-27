@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Directory | Senior Men's Club of Wilmington</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--navy:#1a2744;--navy-light:#2a3a5c;--gold:#c9a227;--gold-light:#e8c547;--cream:#f8f6f1;--cream-dark:#ebe7dc;--text-dark:#2d2d2d;--text-light:#5a5a5a;--white:#fff}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Source Sans 3',sans-serif;color:var(--text-dark);line-height:1.7;background:var(--cream);min-height:100vh}
+        h1,h2,h3,h4{font-family:'Playfair Display',serif;font-weight:600;line-height:1.2}
+        .dir-header{background:var(--navy);padding:1.25rem 2rem;display:flex;justify-content:space-between;align-items:center}
+        .dir-header-left{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .dir-header-left img{height:45px;width:auto}
+        .dir-header-left span{color:var(--white);font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:500}
+        .dir-header-left span em{color:var(--gold);font-style:normal}
+        .dir-header-right a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.95rem;transition:color .3s ease}
+        .dir-header-right a:hover{color:var(--gold)}
+        .dir-login{display:flex;justify-content:center;align-items:center;min-height:calc(100vh - 76px);padding:2rem}
+        .dir-login-box{background:var(--white);border-radius:12px;padding:3rem;max-width:420px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.08)}
+        .dir-login-icon{width:50px;height:50px;color:var(--gold);margin-bottom:1rem}
+        .dir-login-box h2{font-size:1.8rem;color:var(--navy);margin-bottom:.5rem}
+        .dir-login-box>p{color:var(--text-light);margin-bottom:1.5rem;font-size:.95rem}
+        .dir-login-box input{width:100%;padding:14px;border:2px solid #e2e0d8;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:1.1rem;text-align:center;background:var(--cream);margin-bottom:1rem}
+        .dir-login-box input:focus{outline:none;border-color:var(--gold)}
+        .dir-login-error{color:#dc3545;font-size:.9rem;margin-bottom:1rem;display:none}
+        .dir-login-btn{width:100%;padding:14px;background:var(--gold);color:var(--navy);border:none;border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .3s ease}
+        .dir-login-btn:hover{background:var(--navy);color:var(--white)}
+        .dir-content{display:none;padding:2rem}
+        .dir-content.active{display:block}
+        .dir-title-bar{text-align:center;max-width:1100px;margin:0 auto 2rem}
+        .dir-title-bar h2{font-size:2.2rem;color:var(--navy);margin-bottom:.25rem}
+        .dir-title-bar p{color:var(--text-light)}
+        .gold-line{width:60px;height:3px;background:var(--gold);margin:0 auto 1rem}
+        .dir-toolbar{max-width:1100px;margin:0 auto 1.5rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+        .dir-search{flex:1;min-width:250px;position:relative}
+        .dir-search input{width:100%;padding:12px 14px 12px 42px;border:2px solid #e2e0d8;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:1rem;background:var(--white)}
+        .dir-search input:focus{outline:none;border-color:var(--gold)}
+        .dir-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-light)}
+        .dir-count{color:var(--text-light);font-size:.9rem;white-space:nowrap}
+        .dir-table-wrap{max-width:1100px;margin:0 auto;background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .dir-table{width:100%;border-collapse:collapse;min-width:800px}
+        .dir-table thead{background:var(--navy)}
+        .dir-table th{padding:14px 16px;text-align:left;color:var(--white);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;cursor:pointer;user-select:none;transition:background .2s ease;white-space:nowrap}
+        .dir-table th:hover{background:var(--navy-light)}
+        .dir-table th .sa{font-size:.7rem;margin-left:4px;opacity:.6}
+        .dir-table td{padding:11px 16px;border-bottom:1px solid var(--cream-dark);color:var(--text-dark);font-size:.95rem}
+        .dir-table tbody tr:last-child td{border-bottom:none}
+        .dir-table tbody tr:hover{background:var(--cream)}
+        .dir-table .dn{font-weight:600;color:var(--navy);white-space:nowrap}
+        .dir-table a{color:var(--navy);text-decoration:none}
+        .dir-table a:hover{color:var(--gold)}
+        .dir-footer{text-align:center;padding:2rem;color:var(--text-light);font-size:.85rem}
+        .dir-footer a{color:var(--navy);text-decoration:none}
+        .dir-footer a:hover{color:var(--gold)}
+        @media(max-width:768px){.dir-header{padding:1rem}.dir-header-left span{font-size:.9rem}.dir-title-bar h2{font-size:1.6rem}.dir-toolbar{flex-direction:column}.dir-login-box{padding:2rem 1.5rem}}
+        @media print{.dir-header,.dir-toolbar,.dir-footer,.dir-login{display:none}.dir-content{display:block!important;padding:0}.dir-table-wrap{box-shadow:none;border-radius:0;overflow:visible}.dir-table{min-width:unset}.dir-table th{background:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.dir-table td{padding:6px 10px;font-size:.8rem}}
+    </style>
+</head>
+<body>
+    <div class="dir-header">
+        <a href="index.html" class="dir-header-left">
+            <img src="431755393_122105014172236685_4860118167510611517_n.jpg" alt="SMC Logo">
+            <span>Senior <em>Men's</em> Club</span>
+        </a>
+        <div class="dir-header-right"><a href="index.html">&#8592; Back to Main Site</a></div>
+    </div>
+
+    <div class="dir-login" id="dirLogin">
+        <div class="dir-login-box">
+            <svg class="dir-login-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4z"/></svg>
+            <h2>Member Directory</h2>
+            <p>This directory is for SMC members only.<br>Enter the password to continue.</p>
+            <input type="password" id="dirPassword" placeholder="Password" autocomplete="off" autofocus>
+            <div class="dir-login-error" id="dirError">Incorrect password. Please try again.</div>
+            <button class="dir-login-btn" onclick="checkPassword()">Enter Directory</button>
+        </div>
+    </div>
+
+    <div class="dir-content" id="dirContent">
+        <div class="dir-title-bar"><div class="gold-line"></div><h2>Member Directory</h2><p>Active members of the Senior Men's Club of Wilmington</p></div>
+        <div class="dir-toolbar">
+            <div class="dir-search">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="dirSearch" placeholder="Search by name, city, email, or phone..." oninput="filterDirectory()">
+            </div>
+            <div class="dir-count" id="dirCount"></div>
+        </div>
+        <div class="dir-table-wrap">
+            <table class="dir-table">
+                <thead><tr>
+                    <th onclick="sortBy('name')">Name <span class="sa" id="sort-name">&#9650;</span></th>
+                    <th onclick="sortBy('email')">Email <span class="sa" id="sort-email"></span></th>
+                    <th onclick="sortBy('phone')">Phone <span class="sa" id="sort-phone"></span></th>
+                    <th onclick="sortBy('address')">Address <span class="sa" id="sort-address"></span></th>
+                    <th onclick="sortBy('city')">City / State / Zip <span class="sa" id="sort-city"></span></th>
+                </tr></thead>
+                <tbody id="dirBody"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dir-footer"><p>&copy; 2025 Senior Men's Club of Wilmington. Established 1988. | <a href="index.html">Main Site</a></p></div>
+
+    <script>
+        var _all=[],_fil=[],_sc='name',_sa=true;
+        function checkPassword(){var pw=document.getElementById('dirPassword').value;if(pw==='SMC!'){document.getElementById('dirLogin').style.display='none';document.getElementById('dirContent').classList.add('active');loadDir();}else{document.getElementById('dirError').style.display='block';document.getElementById('dirPassword').value='';document.getElementById('dirPassword').focus();}}
+        document.getElementById('dirPassword').addEventListener('keydown',function(e){if(e.key==='Enter')checkPassword();});
+        function loadDir(){fetch('https://manager.seniormensclub.org/api/directory').then(function(r){return r.json();}).then(function(d){if(Array.isArray(d)){_all=d;_fil=d.slice();applySort();}else{showErr();}}).catch(function(){showErr();});}
+        function showErr(){document.getElementById('dirBody').innerHTML='<tr><td colspan="5" style="text-align:center;padding:3rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>';}
+        function filterDirectory(){var q=document.getElementById('dirSearch').value.toLowerCase();if(!q){_fil=_all.slice();}else{_fil=_all.filter(function(m){return(m.firstName+' '+m.lastName+' '+m.email+' '+m.phone+' '+m.city+' '+(m.address1||'')).toLowerCase().indexOf(q)!==-1;});}applySort();}
+        function sortBy(c){if(_sc===c){_sa=!_sa;}else{_sc=c;_sa=true;}applySort();}
+        function applySort(){_fil.sort(function(a,b){var va,vb;if(_sc==='name'){va=a.lastName+a.firstName;vb=b.lastName+b.firstName;}else if(_sc==='email'){va=a.email;vb=b.email;}else if(_sc==='phone'){va=a.phone;vb=b.phone;}else if(_sc==='city'){va=a.city;vb=b.city;}else if(_sc==='address'){va=a.address1||'';vb=b.address1||'';}else{va='';vb='';}va=(va||'').toLowerCase();vb=(vb||'').toLowerCase();if(va<vb)return _sa?-1:1;if(va>vb)return _sa?1:-1;return 0;});updArrows();render();}
+        function updArrows(){['name','email','phone','city','address'].forEach(function(c){var el=document.getElementById('sort-'+c);if(el)el.innerHTML=(_sc===c)?(_sa?'&#9650;':'&#9660;'):'';});}
+        function render(){var b=document.getElementById('dirBody'),m=_fil;if(!m.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-light);">No members found.</td></tr>';document.getElementById('dirCount').textContent='0 members';return;}document.getElementById('dirCount').textContent=m.length+' active member'+(m.length!==1?'s':'');var h='';m.forEach(function(r){var ph=r.phone?r.phone.replace(/(\d{3})(\d{3})(\d{4})/,'($1) $2-$3'):'';var ad=esc(r.address1||'');if(r.address2)ad+=(ad?', ':'')+esc(r.address2);var csz=esc(r.city);if(r.state)csz+=', '+esc(r.state);if(r.zip)csz+=' '+esc(r.zip);h+='<tr><td class="dn">'+esc(r.lastName)+', '+esc(r.firstName)+'</td>';h+='<td>'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'')+'</td>';h+='<td>'+(ph?'<a href="tel:'+esc(r.phone)+'">'+esc(ph)+'</a>':'')+'</td>';h+='<td>'+ad+'</td>';h+='<td>'+csz+'</td></tr>';});b.innerHTML=h;}
+        function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+    </script>
+</body>
+</html>
