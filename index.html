@@ -44,163 +44,29 @@
         }
 
         /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--navy);
-            z-index: 1000;
-            padding: 0 2rem;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .nav-logo img {
-            height: 50px;
-            width: auto;
-        }
-
-        .nav-logo-text {
-            color: var(--white);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .nav-logo-text span {
-            color: var(--gold);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--white);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            background: var(--gold);
-            color: var(--navy) !important;
-            padding: 10px 24px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .nav-cta::after {
-            display: none !important;
-        }
-
-        .nav-cta:hover {
-            background: var(--gold-light);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .mobile-menu-btn span {
-            display: block;
-            width: 25px;
-            height: 2px;
-            background: var(--white);
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: var(--navy); z-index: 1000; padding: 0 2rem; transition: all 0.3s ease; }
+        nav.scrolled { box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .nav-logo img { height: 50px; width: auto; }
+        .nav-logo-text { color: var(--white); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500; }
+        .nav-logo-text span { color: var(--gold); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--white); text-decoration: none; font-size: 0.95rem; font-weight: 500; letter-spacing: 0.5px; transition: color 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--gold); color: var(--navy) !important; padding: 10px 24px; border-radius: 4px; font-weight: 600; }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: var(--gold-light); }
+        .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 10px; }
+        .mobile-menu-btn span { display: block; width: 25px; height: 2px; background: var(--white); margin: 5px 0; transition: all 0.3s ease; }
 
         /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            background: var(--navy);
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .hero-bg img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.35;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(26, 39, 68, 0.95) 0%, rgba(26, 39, 68, 0.7) 100%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 120px 2rem 80px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
+        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; background: var(--navy); }
+        .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+        .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(26, 39, 68, 0.95) 0%, rgba(26, 39, 68, 0.7) 100%); }
+        .hero-content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 120px 2rem 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         .hero-text h1 { color: var(--white); font-size: 3.5rem; margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease; }
         .hero-text h1 span { color: var(--gold); }
         .hero-tagline { color: var(--gold); font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.4rem; margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease 0.2s backwards; }
@@ -471,43 +337,6 @@
             .mosaic-item img, .mosaic-item.wide img { height: 160px; }
             .no-politics-content { flex-direction: column; text-align: center; }
         }
-
-        /* Directory Modal & Section */
-        .dir-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; }
-        .dir-modal-overlay.active { display: flex; }
-        .dir-modal { background: var(--white); border-radius: 12px; padding: 2.5rem; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .dir-modal h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 0.5rem; }
-        .dir-modal p { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.95rem; }
-        .dir-modal input { width: 100%; padding: 12px 14px; border: 2px solid #e2e0d8; border-radius: 8px; font-family: 'Source Sans 3', sans-serif; font-size: 1rem; text-align: center; background: var(--cream); margin-bottom: 1rem; box-sizing: border-box; }
-        .dir-modal input:focus { outline: none; border-color: var(--gold); }
-        .dir-modal-error { color: #dc3545; font-size: 0.9rem; margin-bottom: 1rem; display: none; }
-        .dir-modal-btns { display: flex; gap: 0.75rem; }
-        .dir-modal-btns button { flex: 1; padding: 12px; border-radius: 6px; font-family: 'Source Sans 3', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s ease; }
-        .dir-modal-btns .dir-cancel { background: var(--cream); color: var(--text-light); }
-        .dir-modal-btns .dir-cancel:hover { background: var(--cream-dark); }
-        .dir-modal-btns .dir-submit { background: var(--gold); color: var(--navy); }
-        .dir-modal-btns .dir-submit:hover { background: var(--gold-light); }
-        .directory { display: none; background: var(--cream); }
-        .directory.active { display: block; }
-        .directory-search { max-width: 500px; margin: 0 auto 2rem; position: relative; }
-        .directory-search input { width: 100%; padding: 14px 14px 14px 44px; border: 2px solid #e2e0d8; border-radius: 8px; font-family: 'Source Sans 3', sans-serif; font-size: 1rem; background: var(--white); box-sizing: border-box; }
-        .directory-search input:focus { outline: none; border-color: var(--gold); }
-        .directory-search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: var(--text-light); }
-        .directory-count { text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem; }
-        .directory-table-wrap { max-width: 1000px; margin: 0 auto; background: var(--white); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); overflow: hidden; }
-        .directory-table { width: 100%; border-collapse: collapse; }
-        .directory-table thead { background: var(--navy); }
-        .directory-table th { padding: 14px 18px; text-align: left; color: var(--white); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .directory-table td { padding: 12px 18px; border-bottom: 1px solid var(--cream-dark); color: var(--text-dark); font-size: 0.95rem; }
-        .directory-table tbody tr:last-child td { border-bottom: none; }
-        .directory-table tbody tr:hover { background: var(--cream); }
-        .directory-table .dir-name { font-weight: 600; color: var(--navy); }
-        .dir-lock-btn { display: block; margin: 2rem auto 0; background: none; border: none; color: var(--text-light); font-size: 0.9rem; cursor: pointer; text-decoration: underline; }
-        .dir-lock-btn:hover { color: var(--navy); }
-        @media (max-width: 768px) {
-            .directory-table th, .directory-table td { padding: 10px 12px; font-size: 0.85rem; }
-            .directory-table .dir-email-col, .directory-table .dir-city-col { display: none; }
-        }
     </style>
 </head>
 <body>
@@ -524,7 +353,7 @@
                 <li><a href="#meetings">Meetings</a></li>
                 <li><a href="#speakers">Speakers</a></li>
                 <li><a href="#faq">FAQ</a></li>
-                <li><a href="#" onclick="event.preventDefault();openDirectoryModal()">Directory</a></li>
+                <li><a href="directory.html" target="_blank">Directory</a></li>
                 <li><a href="#contact" class="nav-cta">Join Us</a></li>
             </ul>
             <button class="mobile-menu-btn" onclick="toggleMenu()">
@@ -747,34 +576,6 @@
         </div>
     </section>
 
-    <!-- Directory Password Modal -->
-    <div class="dir-modal-overlay" id="dirModalOverlay">
-        <div class="dir-modal">
-            <h3>Member Directory</h3>
-            <p>Enter the members-only password to view the directory.</p>
-            <input type="password" id="dirPassword" placeholder="Password" autocomplete="off">
-            <div class="dir-modal-error" id="dirError">Incorrect password. Please try again.</div>
-            <div class="dir-modal-btns">
-                <button class="dir-cancel" onclick="closeDirectoryModal()">Cancel</button>
-                <button class="dir-submit" onclick="submitDirectoryPassword()">Enter</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Member Directory Section -->
-    <section class="directory" id="directory">
-        <div class="section-header fade-in"><div class="gold-line"></div><h2>Member Directory</h2><p>Active members of the Senior Men's Club</p></div>
-        <div class="directory-search"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input type="text" id="dirSearch" placeholder="Search by name, city, or email..." oninput="filterDirectory()"></div>
-        <div class="directory-count" id="dirCount"></div>
-        <div class="directory-table-wrap">
-            <table class="directory-table">
-                <thead><tr><th>Name</th><th class="dir-email-col">Email</th><th>Phone</th><th class="dir-city-col">City</th></tr></thead>
-                <tbody id="dirBody"><tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
-            </table>
-        </div>
-        <button class="dir-lock-btn" onclick="lockDirectory()">Lock Directory</button>
-    </section>
-
     <!-- Footer -->
     <footer>
         <div class="footer-content">
@@ -785,7 +586,7 @@
                 <a href="#meetings">Meetings</a>
                 <a href="#speakers">Speakers</a>
                 <a href="#faq">FAQ</a>
-                <a href="#" onclick="event.preventDefault();openDirectoryModal()">Directory</a>
+                <a href="directory.html" target="_blank">Directory</a>
                 <a href="#contact">Contact</a>
             </div>
         </div>
@@ -838,7 +639,7 @@
                     months[key].sort(function(a, b) { return a.date - b.date; }).forEach(function(ev) {
                         var evDate = new Date(ev.date); evDate.setHours(0, 0, 0, 0);
                         var status = ''; var diffDays = Math.floor((evDate - today) / (1000 * 60 * 60 * 24)); if (diffDays < 0) status = 'past'; else if (diffDays <= 6) status = 'today';
-                        var titleDisplay = ''; if (ev.title && ev.title !== 'N/A' && ev.org) { titleDisplay = ev.title + ' — ' + ev.org; } else if (ev.title && ev.title !== 'N/A') { titleDisplay = ev.title; } else if (ev.org) { titleDisplay = ev.org; }
+                        var titleDisplay = ''; if (ev.title && ev.title !== 'N/A' && ev.org) { titleDisplay = ev.title + ' \u2014 ' + ev.org; } else if (ev.title && ev.title !== 'N/A') { titleDisplay = ev.title; } else if (ev.org) { titleDisplay = ev.org; }
                         var topicHTML = ''; if (ev.topic) { topicHTML = '<div class="calendar-topic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/></svg><span>' + ev.topic + '</span></div>'; }
                         monthDiv.innerHTML += '<div class="calendar-event ' + status + ' fade-in"><div class="calendar-date"><div class="calendar-date-badge"><span class="calendar-date-month">' + monthAbbr[evDate.getMonth()] + '</span><span class="calendar-date-day">' + evDate.getDate() + '</span><span class="calendar-date-weekday">' + dayNames[evDate.getDay()] + '</span></div></div><div class="calendar-details"><h4>' + ev.speaker + '</h4>' + (titleDisplay ? '<div class="calendar-speaker-title">' + titleDisplay + '</div>' : '') + topicHTML + '</div></div>';
                     });
@@ -886,62 +687,6 @@
             viewport.addEventListener('touchend', function(e) { var diff = startX - e.changedTouches[0].clientX; if (Math.abs(diff) > 50) { if (diff > 0 && currentPage < totalPages - 1) goToPage(currentPage + 1); else if (diff < 0 && currentPage > 0) goToPage(currentPage - 1); } }, { passive: true });
             goToPage(0);
         })();
-
-        // ====== Member Directory ======
-        var _dirMembers = [];
-        var _dirUnlocked = false;
-
-        function openDirectoryModal() {
-            if (_dirUnlocked) { scrollToDirectory(); return; }
-            document.getElementById('dirModalOverlay').classList.add('active');
-            document.getElementById('dirPassword').value = '';
-            document.getElementById('dirError').style.display = 'none';
-            setTimeout(function(){ document.getElementById('dirPassword').focus(); }, 100);
-            document.getElementById('navLinks').classList.remove('active');
-        }
-        function closeDirectoryModal() { document.getElementById('dirModalOverlay').classList.remove('active'); }
-        function submitDirectoryPassword() {
-            var pw = document.getElementById('dirPassword').value;
-            if (pw === 'SMC!') { _dirUnlocked = true; closeDirectoryModal(); document.getElementById('directory').classList.add('active'); loadDirectory(); scrollToDirectory(); }
-            else { document.getElementById('dirError').style.display = 'block'; document.getElementById('dirPassword').value = ''; document.getElementById('dirPassword').focus(); }
-        }
-        document.getElementById('dirPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') submitDirectoryPassword(); });
-        document.getElementById('dirModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeDirectoryModal(); });
-
-        function scrollToDirectory() { setTimeout(function() { var el = document.getElementById('directory'); var navH = document.getElementById('navbar').offsetHeight; window.scrollTo({ top: el.offsetTop - navH, behavior: 'smooth' }); }, 100); }
-
-        function loadDirectory() {
-            fetch('https://manager.seniormensclub.org/api/directory')
-                .then(function(r) { return r.json(); })
-                .then(function(data) { if (Array.isArray(data)) { _dirMembers = data; renderDirectory(data); } else { document.getElementById('dirBody').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:#dc3545;">Unable to load directory.</td></tr>'; } })
-                .catch(function(err) { console.error('Directory load error:', err); document.getElementById('dirBody').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>'; });
-        }
-
-        function renderDirectory(members) {
-            var body = document.getElementById('dirBody');
-            if (members.length === 0) { body.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-light);">No members found.</td></tr>'; document.getElementById('dirCount').textContent = '0 members'; return; }
-            document.getElementById('dirCount').textContent = members.length + ' active member' + (members.length !== 1 ? 's' : '');
-            var html = '';
-            members.forEach(function(m) {
-                var phone = m.phone ? m.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3') : '';
-                html += '<tr><td class="dir-name">' + escHtml(m.lastName) + ', ' + escHtml(m.firstName) + '</td>';
-                html += '<td class="dir-email-col">' + (m.email ? '<a href="mailto:' + escHtml(m.email) + '" style="color:var(--navy);text-decoration:none;">' + escHtml(m.email) + '</a>' : '') + '</td>';
-                html += '<td>' + (phone ? '<a href="tel:' + escHtml(m.phone) + '" style="color:var(--navy);text-decoration:none;">' + escHtml(phone) + '</a>' : '') + '</td>';
-                html += '<td class="dir-city-col">' + escHtml(m.city) + (m.state ? ', ' + escHtml(m.state) : '') + '</td></tr>';
-            });
-            body.innerHTML = html;
-        }
-
-        function filterDirectory() {
-            var q = document.getElementById('dirSearch').value.toLowerCase();
-            if (!q) { renderDirectory(_dirMembers); return; }
-            var filtered = _dirMembers.filter(function(m) { return (m.firstName + ' ' + m.lastName).toLowerCase().indexOf(q) !== -1 || m.email.toLowerCase().indexOf(q) !== -1 || m.city.toLowerCase().indexOf(q) !== -1; });
-            renderDirectory(filtered);
-        }
-
-        function lockDirectory() { _dirUnlocked = false; _dirMembers = []; document.getElementById('directory').classList.remove('active'); document.getElementById('dirBody').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-light);">Loading directory...</td></tr>'; document.getElementById('dirSearch').value = ''; window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-        function escHtml(str) { var d = document.createElement('div'); d.textContent = str || ''; return d.innerHTML; }
     </script>
 </body>
 </html>
