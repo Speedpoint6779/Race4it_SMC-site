@@ -42,7 +42,7 @@
         .dir-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-light)}
         .dir-count{color:var(--text-light);font-size:.9rem;white-space:nowrap}
         .dir-table-wrap{max-width:1100px;margin:0 auto;background:var(--white);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .dir-table{width:100%;border-collapse:collapse;min-width:800px}
+        .dir-table{width:100%;border-collapse:collapse;min-width:400px}
         .dir-table thead{background:var(--navy)}
         .dir-table th{padding:14px 16px;text-align:left;color:var(--white);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;cursor:pointer;user-select:none;transition:background .2s ease;white-space:nowrap}
         .dir-table th:hover{background:var(--navy-light)}
@@ -81,11 +81,11 @@
     </div>
 
     <div class="dir-content" id="dirContent">
-        <div class="dir-title-bar"><div class="gold-line"></div><h2>Member Directory</h2><p>Active members of the Senior Men's Club of Wilmington</p></div>
+        <div class="dir-title-bar"><div class="gold-line"></div><h2>Member Directory</h2><p>Members of the Senior Men's Club of Wilmington</p></div>
         <div class="dir-toolbar">
             <div class="dir-search">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" id="dirSearch" placeholder="Search by name, city, email, or phone..." oninput="filterDirectory()">
+                <input type="text" id="dirSearch" placeholder="Search by name or email..." oninput="filterDirectory()">
             </div>
             <div class="dir-count" id="dirCount"></div>
         </div>
@@ -94,11 +94,8 @@
                 <thead><tr>
                     <th onclick="sortBy('name')">Name <span class="sa" id="sort-name">&#9650;</span></th>
                     <th onclick="sortBy('email')">Email <span class="sa" id="sort-email"></span></th>
-                    <th onclick="sortBy('phone')">Phone <span class="sa" id="sort-phone"></span></th>
-                    <th onclick="sortBy('address')">Address <span class="sa" id="sort-address"></span></th>
-                    <th onclick="sortBy('city')">City / State / Zip <span class="sa" id="sort-city"></span></th>
                 </tr></thead>
-                <tbody id="dirBody"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
+                <tbody id="dirBody"><tr><td colspan="2" style="text-align:center;padding:3rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
             </table>
         </div>
     </div>
@@ -110,12 +107,12 @@
         function checkPassword(){var pw=document.getElementById('dirPassword').value;if(pw==='SMC!'){document.getElementById('dirLogin').style.display='none';document.getElementById('dirContent').classList.add('active');loadDir();}else{document.getElementById('dirError').style.display='block';document.getElementById('dirPassword').value='';document.getElementById('dirPassword').focus();}}
         document.getElementById('dirPassword').addEventListener('keydown',function(e){if(e.key==='Enter')checkPassword();});
         function loadDir(){fetch('https://manager.seniormensclub.org/api/directory').then(function(r){return r.json();}).then(function(d){if(Array.isArray(d)){_all=d;_fil=d.slice();applySort();}else{showErr();}}).catch(function(){showErr();});}
-        function showErr(){document.getElementById('dirBody').innerHTML='<tr><td colspan="5" style="text-align:center;padding:3rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>';}
-        function filterDirectory(){var q=document.getElementById('dirSearch').value.toLowerCase();if(!q){_fil=_all.slice();}else{_fil=_all.filter(function(m){return(m.firstName+' '+m.lastName+' '+m.email+' '+m.phone+' '+m.city+' '+(m.address1||'')).toLowerCase().indexOf(q)!==-1;});}applySort();}
+        function showErr(){document.getElementById('dirBody').innerHTML='<tr><td colspan="2" style="text-align:center;padding:3rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>';}
+        function filterDirectory(){var q=document.getElementById('dirSearch').value.toLowerCase();if(!q){_fil=_all.slice();}else{_fil=_all.filter(function(m){return(m.firstName+' '+m.lastName+' '+m.email).toLowerCase().indexOf(q)!==-1;});}applySort();}
         function sortBy(c){if(_sc===c){_sa=!_sa;}else{_sc=c;_sa=true;}applySort();}
-        function applySort(){_fil.sort(function(a,b){var va,vb;if(_sc==='name'){va=a.lastName+a.firstName;vb=b.lastName+b.firstName;}else if(_sc==='email'){va=a.email;vb=b.email;}else if(_sc==='phone'){va=a.phone;vb=b.phone;}else if(_sc==='city'){va=a.city;vb=b.city;}else if(_sc==='address'){va=a.address1||'';vb=b.address1||'';}else{va='';vb='';}va=(va||'').toLowerCase();vb=(vb||'').toLowerCase();if(va<vb)return _sa?-1:1;if(va>vb)return _sa?1:-1;return 0;});updArrows();render();}
-        function updArrows(){['name','email','phone','city','address'].forEach(function(c){var el=document.getElementById('sort-'+c);if(el)el.innerHTML=(_sc===c)?(_sa?'&#9650;':'&#9660;'):'';});}
-        function render(){var b=document.getElementById('dirBody'),m=_fil;if(!m.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--text-light);">No members found.</td></tr>';document.getElementById('dirCount').textContent='0 members';return;}document.getElementById('dirCount').textContent=m.length+' active member'+(m.length!==1?'s':'');var h='';m.forEach(function(r){var ph=r.phone?r.phone.replace(/(\d{3})(\d{3})(\d{4})/,'($1) $2-$3'):'';var ad=esc(r.address1||'');if(r.address2)ad+=(ad?', ':'')+esc(r.address2);var csz=esc(r.city);if(r.state)csz+=', '+esc(r.state);if(r.zip)csz+=' '+esc(r.zip);h+='<tr><td class="dn">'+esc(r.lastName)+', '+esc(r.firstName)+'</td>';h+='<td>'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'')+'</td>';h+='<td>'+(ph?'<a href="tel:'+esc(r.phone)+'">'+esc(ph)+'</a>':'')+'</td>';h+='<td>'+ad+'</td>';h+='<td>'+csz+'</td></tr>';});b.innerHTML=h;}
+        function applySort(){_fil.sort(function(a,b){var va,vb;if(_sc==='name'){va=a.lastName+a.firstName;vb=b.lastName+b.firstName;}else if(_sc==='email'){va=a.email;vb=b.email;}else{va='';vb='';}va=(va||'').toLowerCase();vb=(vb||'').toLowerCase();if(va<vb)return _sa?-1:1;if(va>vb)return _sa?1:-1;return 0;});updArrows();render();}
+        function updArrows(){['name','email'].forEach(function(c){var el=document.getElementById('sort-'+c);if(el)el.innerHTML=(_sc===c)?(_sa?'&#9650;':'&#9660;'):'';});}
+        function render(){var b=document.getElementById('dirBody'),m=_fil;if(!m.length){b.innerHTML='<tr><td colspan="2" style="text-align:center;padding:3rem;color:var(--text-light);">No members found.</td></tr>';document.getElementById('dirCount').textContent='0 members';return;}document.getElementById('dirCount').textContent=m.length+' member'+(m.length!==1?'s':'');var h='';m.forEach(function(r){h+='<tr><td class="dn">'+esc(r.lastName)+', '+esc(r.firstName)+'</td>';h+='<td>'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'')+'</td></tr>';});b.innerHTML=h;}
         function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
     </script>
 </body>
