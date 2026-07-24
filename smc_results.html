@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Men's Club — Questionnaire Results</title>
+<style>
+  :root{
+    --ink:#17202b; --slate:#33414f; --muted:#5c6775; --line:#c4cdd7;
+    --paper:#ffffff; --band:#eef4f8; --accent:#0f4c73; --accent-dk:#0b3a58;
+    --bar:#2f7fa8; --bar-top:#0f4c73;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,serif;color:var(--ink);background:#e6e9ed;line-height:1.5;font-size:18px;}
+  .sheet{background:var(--paper);max-width:900px;margin:0 auto;padding:40px 44px 56px;box-shadow:0 2px 22px rgba(20,30,45,.12);}
+  header.mast{border-bottom:4px solid var(--accent);padding-bottom:20px;margin-bottom:10px;}
+  .eyebrow{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.24em;font-size:14px;font-weight:700;color:var(--accent);margin:0 0 10px;}
+  h1{font-size:40px;line-height:1.08;margin:0 0 12px;letter-spacing:-.01em;}
+  .summary{font-family:"Helvetica Neue",Arial,sans-serif;font-size:19px;color:var(--slate);margin:0;}
+  .summary strong{color:var(--accent);font-size:30px;}
+  .controls{font-family:"Helvetica Neue",Arial,sans-serif;font-size:15px;color:var(--muted);margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  .btn{font-family:"Helvetica Neue",Arial,sans-serif;font-size:15px;font-weight:600;color:#fff;background:var(--accent);border:none;border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--accent-dk);}
+  .qblock{margin-top:34px;}
+  .qtitle{font-family:"Helvetica Neue",Arial,sans-serif;font-size:20px;font-weight:700;color:var(--slate);margin:0 0 4px;}
+  .qmeta{font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;color:var(--muted);margin:0 0 14px;}
+  .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:9px;}
+  .bar-label{font-family:"Helvetica Neue",Arial,sans-serif;font-size:16px;color:var(--ink);width:200px;flex:0 0 200px;text-align:right;line-height:1.25;}
+  .bar-track{flex:1;background:#eef1f4;border-radius:6px;height:30px;position:relative;overflow:hidden;}
+  .bar-fill{background:var(--bar);height:100%;border-radius:6px;min-width:2px;transition:width .5s ease;}
+  .bar-fill.top{background:var(--bar-top);}
+  .bar-val{font-family:"Helvetica Neue",Arial,sans-serif;font-size:15px;font-weight:600;color:var(--slate);width:96px;flex:0 0 96px;}
+  .open-list{margin:8px 0 0;padding:0;list-style:none;}
+  .open-list li{font-size:17px;color:var(--slate);background:#f6f8fa;border-left:3px solid var(--accent);border-radius:6px;padding:10px 14px;margin-bottom:8px;}
+  .section-head{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:15px;font-weight:700;color:#fff;background:var(--accent);padding:7px 14px;border-radius:5px;display:inline-block;margin-top:40px;}
+  .state{font-family:"Helvetica Neue",Arial,sans-serif;font-size:18px;color:var(--muted);padding:40px 0;text-align:center;}
+  .err{color:#9b2c2c;}
+  @media (max-width:640px){
+    .sheet{padding:24px 18px 36px;} h1{font-size:30px;}
+    .bar-label{width:120px;flex-basis:120px;font-size:14px;}
+    .bar-val{width:70px;flex-basis:70px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="mast">
+    <p class="eyebrow">Questionnaire Results</p>
+    <h1>What the Club Told Us</h1>
+    <p class="summary"><strong id="respCount">—</strong> &nbsp;responses collected</p>
+    <div class="controls">
+      <button class="btn" onclick="loadData()">Refresh results</button>
+      <span id="updated"></span>
+    </div>
+  </header>
+
+  <div id="report"><div class="state">Loading results…</div></div>
+</div>
+
+<script>
+  /* =========================================================
+     SETUP STEP: paste the SAME Google Apps Script Web App URL
+     you used in the questionnaire, between the quotes below.
+     ========================================================= */
+  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwzwAZW2HtrNJMCIXAJw-cnI43zni89aJKqATVily--oe8ZiIQoeaAHd6sIkX29oZT5/exec";
+
+  // Question definitions: label, field name, type, and options in display order.
+  const QUESTIONS = [
+    {sec:"About You"},
+    {label:"How long a member?", field:"tenure", type:"single",
+     opts:["Under 2 years","2-5 years","6-10 years","10+ years"]},
+    {label:"Friday meeting attendance", field:"attendance", type:"single",
+     opts:["Almost every week","A couple times a month","Rarely","Stopped coming"]},
+    {label:"Main reason for not attending", field:"reason_away", type:"single",
+     opts:["Health or mobility","Not worth the time","Don't know many people","Schedule conflict","Speakers not interesting","Other"]},
+
+    {sec:"Friendship & Connection"},
+    {label:"Members known well enough to call", field:"know_well", type:"single",
+     opts:["0-2","3-5","6-10","10+"]},
+    {label:"Want to know more members?", field:"want_more_friends", type:"single",
+     opts:["Yes","Fine as is"]},
+
+    {sec:"Small Interest Groups"},
+    {label:"Groups members would join", field:"groups", type:"multi",
+     opts:["Post-meeting lunch","Weekday coffee meetup","Golf","Cards","Walking/hiking","Book/discussion","Wine/beer tasting","Woodworking/fix-it","Investing/finance","Fishing","Other"]},
+
+    {sec:"Club Events & Gatherings"},
+    {label:"Attended this year&rsquo;s barbecue?", field:"bbq", type:"single",
+     opts:["Yes","No - couldn't make it","No - didn't know","No - not my thing"]},
+    {label:"Events members would attend", field:"events", type:"multi",
+     opts:["Barbecue/pig pick","Holiday dinner","Oyster roast/fall cookout","Ballgame/sporting","Brewery/distillery tour","Museum/historical","Day trips","Happy hour","Other"]},
+    {label:"Would attend more if family included?", field:"family", type:"single",
+     opts:["Yes","Doesn't matter","Prefer men-only"]},
+    {label:"Events per year they'd attend", field:"event_count", type:"single",
+     opts:["1-2","3-4","5+","None"]},
+
+    {sec:"Friday Speakers"},
+    {label:"Speaker rating", field:"speakers", type:"single",
+     opts:["Great","Good","Mixed","Often not for me"]},
+    {label:"Topics wanted", field:"topics", type:"multi",
+     opts:["History","Travel","Health & aging","Finance","Local issues","Science & tech","Military","Sports","Music & arts","Humor/entertainment"]},
+
+    {sec:"Lend a Hand & Final Thoughts"},
+    {label:"Willing to help organize?", field:"volunteer", type:"single",
+     opts:["Yes","Maybe","No"]},
+    {label:"What would make the club more valuable", field:"value_open", type:"open"},
+    {label:"What to stop, start, or change", field:"change_open", type:"open"}
+  ];
+
+  const report = document.getElementById('report');
+
+  function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+
+  // Google Sheets auto-converts range answers like "3-5" into dates (2026-03-05T...).
+  // Convert such values back to "month-day" and match against this question's options.
+  function unmangle(val, opts){
+    var m = /^(\d{4})-(\d{2})-(\d{2})T/.exec(val);
+    if(!m) return val;
+    var month = parseInt(m[2],10), day = parseInt(m[3],10);
+    var candidate = month + '-' + day;          // e.g. "3-5", "6-10", "1-2"
+    if(opts && opts.indexOf(candidate) !== -1) return candidate;
+    return val;                                  // genuine timestamp; leave alone
+  }
+
+  function loadData(){
+    report.innerHTML = '<div class="state">Loading results…</div>';
+    if(SHEET_ENDPOINT.indexOf('PASTE_YOUR') === 0){
+      report.innerHTML = '<div class="state err">Setup not finished: add your Google Script link at the top of this file.</div>';
+      return;
+    }
+    fetch(SHEET_ENDPOINT + '?action=read')
+      .then(function(r){return r.json();})
+      .then(function(rows){ render(rows); })
+      .catch(function(){
+        report.innerHTML = '<div class="state err">Could not load results. Check that the Google Script link is correct and the script is deployed for "Anyone".</div>';
+      });
+  }
+
+  function render(rows){
+    if(!Array.isArray(rows) || rows.length === 0){
+      document.getElementById('respCount').textContent = '0';
+      report.innerHTML = '<div class="state">No responses yet. Charts will appear here as members submit the questionnaire.</div>';
+      return;
+    }
+    document.getElementById('respCount').textContent = rows.length;
+    document.getElementById('updated').textContent = 'Updated ' + new Date().toLocaleString();
+
+    let html = '';
+    QUESTIONS.forEach(function(q){
+      if(q.sec){ html += '<div class="section-head">' + esc(q.sec) + '</div>'; return; }
+
+      if(q.type === 'open'){
+        const answers = rows.map(function(r){return (r[q.field]||'').trim();}).filter(Boolean);
+        html += '<div class="qblock"><p class="qtitle">' + esc(q.label) + '</p>';
+        html += '<p class="qmeta">' + answers.length + ' written response' + (answers.length===1?'':'s') + '</p>';
+        if(answers.length){
+          html += '<ul class="open-list">' + answers.map(function(a){return '<li>' + esc(a) + '</li>';}).join('') + '</ul>';
+        } else { html += '<p class="qmeta">—</p>'; }
+        html += '</div>';
+        return;
+      }
+
+      // Tally counts for single/multi choice
+      const counts = {};
+      q.opts.forEach(function(o){counts[o]=0;});
+      const otherTexts = [];
+      let answered = 0;
+      rows.forEach(function(r){
+        const raw = (r[q.field]||'').trim();
+        if(!raw) return;
+        answered++;
+        raw.split(';').map(function(s){return s.trim();}).forEach(function(val){
+          val = unmangle(val, q.opts);
+          // "Other: something" rolls up under Other, and we keep the write-in text
+          if(/^Other:/i.test(val)){
+            otherTexts.push(val.replace(/^Other:\s*/i,''));
+            counts['Other'] = (counts['Other']||0)+1;
+          } else if(counts.hasOwnProperty(val)){
+            counts[val]++;
+          } else {
+            counts[val] = (counts[val]||0)+1;
+          }
+        });
+      });
+      const maxCount = Math.max.apply(null, Object.values(counts).concat([1]));
+      const base = q.type === 'multi' ? rows.length : (answered || 1);
+
+      html += '<div class="qblock"><p class="qtitle">' + esc(q.label) + '</p>';
+      html += '<p class="qmeta">' + (q.type==='multi' ? 'Check-all-that-apply · ' : '') + answered + ' answered</p>';
+      Object.keys(counts).forEach(function(opt){
+        const c = counts[opt];
+        const pct = Math.round((c/base)*100);
+        const w = Math.round((c/maxCount)*100);
+        const isTop = c === maxCount && c > 0;
+        html += '<div class="bar-row">' +
+          '<div class="bar-label">' + esc(opt) + '</div>' +
+          '<div class="bar-track"><div class="bar-fill' + (isTop?' top':'') + '" style="width:' + w + '%"></div></div>' +
+          '<div class="bar-val">' + c + ' &nbsp;(' + pct + '%)</div>' +
+        '</div>';
+      });
+      if(otherTexts.length){
+        html += '<ul class="open-list" style="margin-top:10px;">' +
+          otherTexts.map(function(t){return '<li>Other: ' + esc(t) + '</li>';}).join('') + '</ul>';
+      }
+      html += '</div>';
+    });
+
+    report.innerHTML = html;
+  }
+
+  loadData();
+</script>
+</body>
+</html>
