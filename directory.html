@@ -56,8 +56,31 @@
         .dir-footer{text-align:center;padding:2rem;color:var(--text-light);font-size:.85rem}
         .dir-footer a{color:var(--navy);text-decoration:none}
         .dir-footer a:hover{color:var(--gold)}
-        @media(max-width:768px){.dir-header{padding:1rem}.dir-header-left span{font-size:.9rem}.dir-title-bar h2{font-size:1.6rem}.dir-toolbar{flex-direction:column}.dir-login-box{padding:2rem 1.5rem}}
-        @media print{.dir-header,.dir-toolbar,.dir-footer,.dir-login{display:none}.dir-content{display:block!important;padding:0}.dir-table-wrap{box-shadow:none;border-radius:0;overflow:visible}.dir-table{min-width:unset}.dir-table th{background:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.dir-table td{padding:6px 10px;font-size:.8rem}}
+        .dir-add-btn{padding:12px 18px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .3s ease}
+        .dir-add-btn:hover{background:var(--navy);color:var(--white)}
+        .dir-edit-btn{padding:5px 14px;background:transparent;color:var(--navy);border:1.5px solid var(--gold);border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s ease}
+        .dir-edit-btn:hover{background:var(--gold);color:var(--navy)}
+        .dir-table th.no-sort{cursor:default}
+        .dir-table th.no-sort:hover{background:var(--navy)}
+        .dir-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,.55);z-index:100;align-items:center;justify-content:center;padding:1.5rem}
+        .dir-modal-overlay.active{display:flex}
+        .dir-modal{background:var(--white);border-radius:12px;padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+        .dir-modal h3{font-size:1.5rem;color:var(--navy);margin-bottom:1.25rem}
+        .dm-field{margin-bottom:1rem;text-align:left}
+        .dm-field label{display:block;font-size:.85rem;font-weight:600;color:var(--text-dark);margin-bottom:.35rem}
+        .dm-field .dm-opt{font-weight:400;color:var(--text-light)}
+        .dm-field input{width:100%;padding:11px 13px;border:2px solid #e2e0d8;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:1rem;background:var(--cream)}
+        .dm-field input:focus{outline:none;border-color:var(--gold)}
+        .dm-error{color:#dc3545;font-size:.9rem;margin:.25rem 0 1rem;display:none}
+        .dm-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.25rem}
+        .dm-cancel,.dm-save{padding:11px 20px;border-radius:6px;font-family:'Source Sans 3',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;border:none;transition:all .2s ease}
+        .dm-cancel{background:var(--cream-dark);color:var(--text-dark)}
+        .dm-cancel:hover{background:#ddd8ca}
+        .dm-save{background:var(--gold);color:var(--navy)}
+        .dm-save:hover{background:var(--navy);color:var(--white)}
+        .dm-save:disabled{opacity:.6;cursor:default}
+        @media(max-width:768px){.dir-header{padding:1rem}.dir-header-left span{font-size:.9rem}.dir-title-bar h2{font-size:1.6rem}.dir-toolbar{flex-direction:column}.dir-add-btn{width:100%}.dir-login-box{padding:2rem 1.5rem}.dir-modal{padding:1.5rem}}
+        @media print{.dir-header,.dir-toolbar,.dir-footer,.dir-login,.col-actions{display:none!important}.dir-content{display:block!important;padding:0}.dir-table-wrap{box-shadow:none;border-radius:0;overflow:visible}.dir-table{min-width:unset}.dir-table th{background:#333!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.dir-table td{padding:6px 10px;font-size:.8rem}}
     </style>
 </head>
 <body>
@@ -88,32 +111,54 @@
                 <input type="text" id="dirSearch" placeholder="Search by name or email..." oninput="filterDirectory()">
             </div>
             <div class="dir-count" id="dirCount"></div>
+            <button class="dir-add-btn" onclick="openAdd()">+ Add Member</button>
         </div>
         <div class="dir-table-wrap">
             <table class="dir-table">
                 <thead><tr>
                     <th onclick="sortBy('name')">Name <span class="sa" id="sort-name">&#9650;</span></th>
                     <th onclick="sortBy('email')">Email <span class="sa" id="sort-email"></span></th>
+                    <th class="no-sort">Phone</th>
+                    <th class="no-sort col-actions" style="text-align:right;">Actions</th>
                 </tr></thead>
-                <tbody id="dirBody"><tr><td colspan="2" style="text-align:center;padding:3rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
+                <tbody id="dirBody"><tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--text-light);">Loading directory...</td></tr></tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="dir-modal-overlay" id="dirModal">
+        <div class="dir-modal">
+            <h3 id="dmTitle">Add Member</h3>
+            <div class="dm-field"><label for="dmFirst">First Name *</label><input id="dmFirst" type="text" autocomplete="off"></div>
+            <div class="dm-field"><label for="dmLast">Last Name *</label><input id="dmLast" type="text" autocomplete="off"></div>
+            <div class="dm-field"><label for="dmEmail">Email Address *</label><input id="dmEmail" type="email" autocomplete="off"></div>
+            <div class="dm-field"><label for="dmPhone">Phone Number <span class="dm-opt">(optional)</span></label><input id="dmPhone" type="tel" autocomplete="off"></div>
+            <div class="dm-error" id="dmError"></div>
+            <div class="dm-actions"><button class="dm-cancel" onclick="closeModal()">Cancel</button><button class="dm-save" id="dmSave" onclick="saveMember()">Save</button></div>
         </div>
     </div>
 
     <div class="dir-footer"><p>&copy; 2025 Senior Men's Club of Wilmington. Established 1988. | <a href="index.html">Main Site</a></p></div>
 
     <script>
-        var _all=[],_fil=[],_sc='name',_sa=true;
+        var _all=[],_fil=[],_sc='name',_sa=true,_editId=null,API='https://manager.seniormensclub.org/api/directory';
         function checkPassword(){var pw=document.getElementById('dirPassword').value;if(pw==='SMC!'){document.getElementById('dirLogin').style.display='none';document.getElementById('dirContent').classList.add('active');loadDir();}else{document.getElementById('dirError').style.display='block';document.getElementById('dirPassword').value='';document.getElementById('dirPassword').focus();}}
         document.getElementById('dirPassword').addEventListener('keydown',function(e){if(e.key==='Enter')checkPassword();});
-        function loadDir(){fetch('https://manager.seniormensclub.org/api/directory').then(function(r){return r.json();}).then(function(d){if(Array.isArray(d)){_all=d;_fil=d.slice();applySort();}else{showErr();}}).catch(function(){showErr();});}
-        function showErr(){document.getElementById('dirBody').innerHTML='<tr><td colspan="2" style="text-align:center;padding:3rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>';}
-        function filterDirectory(){var q=document.getElementById('dirSearch').value.toLowerCase();if(!q){_fil=_all.slice();}else{_fil=_all.filter(function(m){return(m.firstName+' '+m.lastName+' '+m.email).toLowerCase().indexOf(q)!==-1;});}applySort();}
+        function loadDir(){fetch(API).then(function(r){return r.json();}).then(function(d){if(Array.isArray(d)){_all=d;filterDirectory();}else{showErr();}}).catch(function(){showErr();});}
+        function showErr(){document.getElementById('dirBody').innerHTML='<tr><td colspan="4" style="text-align:center;padding:3rem;color:#dc3545;">Unable to load directory. Please try again later.</td></tr>';}
+        function filterDirectory(){var q=document.getElementById('dirSearch').value.toLowerCase();if(!q){_fil=_all.slice();}else{_fil=_all.filter(function(m){return(m.firstName+' '+m.lastName+' '+m.email+' '+(m.phone||'')).toLowerCase().indexOf(q)!==-1;});}applySort();}
         function sortBy(c){if(_sc===c){_sa=!_sa;}else{_sc=c;_sa=true;}applySort();}
         function applySort(){_fil.sort(function(a,b){var va,vb;if(_sc==='name'){va=a.lastName+a.firstName;vb=b.lastName+b.firstName;}else if(_sc==='email'){va=a.email;vb=b.email;}else{va='';vb='';}va=(va||'').toLowerCase();vb=(vb||'').toLowerCase();if(va<vb)return _sa?-1:1;if(va>vb)return _sa?1:-1;return 0;});updArrows();render();}
         function updArrows(){['name','email'].forEach(function(c){var el=document.getElementById('sort-'+c);if(el)el.innerHTML=(_sc===c)?(_sa?'&#9650;':'&#9660;'):'';});}
-        function render(){var b=document.getElementById('dirBody'),m=_fil;if(!m.length){b.innerHTML='<tr><td colspan="2" style="text-align:center;padding:3rem;color:var(--text-light);">No members found.</td></tr>';document.getElementById('dirCount').textContent='0 members';return;}document.getElementById('dirCount').textContent=m.length+' member'+(m.length!==1?'s':'');var h='';m.forEach(function(r){h+='<tr><td class="dn">'+esc(r.lastName)+', '+esc(r.firstName)+'</td>';h+='<td>'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'')+'</td></tr>';});b.innerHTML=h;}
+        function render(){var b=document.getElementById('dirBody'),m=_fil;if(!m.length){b.innerHTML='<tr><td colspan="4" style="text-align:center;padding:3rem;color:var(--text-light);">No members found.</td></tr>';document.getElementById('dirCount').textContent='0 members';return;}document.getElementById('dirCount').textContent=m.length+' member'+(m.length!==1?'s':'');var h='';m.forEach(function(r){h+='<tr><td class="dn">'+esc(r.lastName)+', '+esc(r.firstName)+'</td>';h+='<td>'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':'')+'</td>';h+='<td>'+(r.phone?esc(r.phone):'<span style="color:var(--text-light);">&mdash;</span>')+'</td>';h+='<td class="col-actions" style="text-align:right;">'+((r.id!==undefined&&r.id!==null&&r.id!=='')?'<button class="dir-edit-btn" onclick="openEdit(\''+esc(String(r.id))+'\')">Edit</button>':'')+'</td></tr>';});b.innerHTML=h;}
         function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+        function openAdd(){_editId=null;document.getElementById('dmTitle').textContent='Add Member';document.getElementById('dmFirst').value='';document.getElementById('dmLast').value='';document.getElementById('dmEmail').value='';document.getElementById('dmPhone').value='';document.getElementById('dmError').style.display='none';document.getElementById('dirModal').classList.add('active');document.getElementById('dmFirst').focus();}
+        function openEdit(id){var m=null;for(var i=0;i<_all.length;i++){if(String(_all[i].id)===String(id)){m=_all[i];break;}}if(!m)return;_editId=id;document.getElementById('dmTitle').textContent='Edit Member';document.getElementById('dmFirst').value=m.firstName||'';document.getElementById('dmLast').value=m.lastName||'';document.getElementById('dmEmail').value=m.email||'';document.getElementById('dmPhone').value=m.phone||'';document.getElementById('dmError').style.display='none';document.getElementById('dirModal').classList.add('active');document.getElementById('dmFirst').focus();}
+        function closeModal(){document.getElementById('dirModal').classList.remove('active');}
+        function dmErr(msg){var e=document.getElementById('dmError');e.textContent=msg;e.style.display='block';return false;}
+        function saveMember(){var first=document.getElementById('dmFirst').value.trim(),last=document.getElementById('dmLast').value.trim(),email=document.getElementById('dmEmail').value.trim(),phone=document.getElementById('dmPhone').value.trim();if(!first)return dmErr('First name is required.');if(!last)return dmErr('Last name is required.');if(!email)return dmErr('Email address is required.');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return dmErr('Please enter a valid email address.');var btn=document.getElementById('dmSave');btn.disabled=true;btn.textContent='Saving...';var payload={firstName:first,lastName:last,email:email,phone:phone},method='POST';if(_editId){payload.id=_editId;method='PUT';}fetch(API,{method:method,headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};},function(){return{ok:r.ok,j:{}};});}).then(function(res){btn.disabled=false;btn.textContent='Save';if(res.ok){closeModal();loadDir();}else{dmErr((res.j&&res.j.error)?res.j.error:'Save failed. Please try again.');}}).catch(function(){btn.disabled=false;btn.textContent='Save';dmErr('Network error. Please try again.');});}
+        document.getElementById('dirModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+        ['dmFirst','dmLast','dmEmail','dmPhone'].forEach(function(id){document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')saveMember();});});
     </script>
 </body>
 </html>
