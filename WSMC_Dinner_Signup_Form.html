@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Annual Dinner Signup Sheet | Wilmington Senior Men's Club</title>
+<style>
+  @page { size: letter portrait; margin: 0.45in; }
+  :root{
+    --navy:#12313b; --teal:#1d6267; --paper:#fffdf7; --sand:#f4eddf;
+    --ink:#19323a; --muted:#52666c; --line:#b9c7c3;
+    --serif:Georgia,'Times New Roman',serif; --sans:'Segoe UI',Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--ink);font-size:10.5pt;line-height:1.32;
+       -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{width:7.5in;margin:0 auto}
+
+  /* ---------- Masthead ---------- */
+  .top{display:flex;align-items:center;gap:12px;border-bottom:2.5px solid var(--navy);padding-bottom:6px}
+  .top img{width:0.68in;height:0.68in;object-fit:contain;flex-shrink:0}
+  .club{font-family:var(--serif);font-size:10pt;color:var(--teal);letter-spacing:.06em;
+        text-transform:uppercase;margin-bottom:1px}
+  h1{font-family:var(--serif);font-size:23pt;line-height:1.02;margin:0;color:var(--navy);font-weight:700}
+  h1 em{font-style:italic;color:var(--teal)}
+  .when{margin-top:4px;font-size:10.5pt;font-weight:700;color:var(--ink)}
+  .when span{color:var(--muted);font-weight:400}
+
+  .pitch{margin:7px 0 0;font-size:10.5pt}
+  .pitch b{color:var(--navy)}
+
+  /* ---------- Highlights ---------- */
+  .highlights{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px 14px;
+              background:var(--sand);border-radius:4px;padding:9px 12px;margin-top:7px}
+  .hl{font-size:9.2pt;line-height:1.28}
+  .hl b{color:var(--navy);font-size:9.9pt}
+  .hl span{color:var(--muted)}
+
+  /* ---------- Price bar ---------- */
+  .pricebar{display:flex;justify-content:space-between;align-items:center;
+            background:var(--navy);color:#fff;border-radius:4px;padding:6px 13px;margin-top:6px}
+  .pricebar .amt{font-family:var(--serif);font-size:15pt;font-weight:700}
+  .pricebar .lim{font-size:9.5pt;color:#e6d9bf}
+
+  /* ---------- Form ---------- */
+  .formhead{display:flex;justify-content:space-between;align-items:baseline;margin:10px 0 6px}
+  .formhead h2{font-family:var(--serif);font-size:14pt;margin:0;color:var(--navy)}
+  .formhead .sub{font-size:9pt;color:var(--muted)}
+
+  .row{display:flex;gap:14px;margin-bottom:10px;align-items:flex-end}
+  .fld{flex:1;min-width:0}
+  label{display:block;font-size:9pt;font-weight:700;color:var(--teal);
+        text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .line{border-bottom:1.3px solid var(--line);height:0.34in}
+  .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+  .carhint{font-size:9pt;color:var(--muted);margin:0 0 10px}
+
+  .choices{display:flex;flex-wrap:wrap;gap:4px 20px}
+  .ck{display:flex;align-items:center;gap:7px;font-size:11pt}
+  .box{width:16px;height:16px;border:1.6px solid var(--navy);border-radius:2px;flex-shrink:0}
+  .big{font-size:11pt;font-weight:600}
+
+  .panel{border:1.3px solid var(--line);border-radius:4px;padding:9px 12px;margin-bottom:10px}
+  .ttl{font-size:8.5pt;font-weight:700;color:var(--teal);text-transform:uppercase;
+       letter-spacing:.05em;margin-bottom:4px}
+  .ttl .opt{font-size:8.5pt}
+  .two{display:flex;gap:24px;flex-wrap:wrap}
+  .two > div{flex:1;min-width:2.4in}
+
+  /* ---------- Total / payment ---------- */
+  .total{display:flex;gap:16px;align-items:center;background:var(--sand);
+         border-radius:4px;padding:10px 12px;margin-bottom:10px}
+  .total .calc{font-size:11pt;font-weight:700;display:flex;align-items:flex-end;gap:6px;white-space:nowrap}
+  .blank{display:inline-block;border-bottom:1.5px solid var(--navy);min-width:0.55in;height:0.3in}
+  .blank.wide{min-width:0.8in}
+
+  .returnbox{border:1.8px solid var(--navy);border-radius:4px;padding:10px 12px}
+  .returnbox .hd{font-family:var(--serif);font-size:11.5pt;color:var(--navy);font-weight:700;margin-bottom:2px}
+  .returnbox p{margin:0 0 4px;font-size:10pt}
+  .returnbox .note{color:var(--muted);font-size:9.2pt;margin:0}
+
+  .foot{display:flex;justify-content:space-between;gap:14px;margin-top:6px;
+        border-top:1.3px solid var(--line);padding-top:6px;font-size:9.2pt;color:var(--muted)}
+  .foot b{color:var(--navy)}
+
+  @media screen{
+    body{background:#e4eae8;padding:26px 14px}
+    .sheet{background:#fff;padding:0.45in;box-shadow:0 6px 28px rgba(0,0,0,.16);border-radius:3px}
+    .hint{width:7.5in;margin:0 auto 14px;font-size:13px;color:#33484f;background:#fffdf7;
+          border-left:4px solid var(--teal);padding:9px 13px;border-radius:3px}
+  }
+  @media print{ body{background:#fff;padding:0} .sheet{width:auto;padding:0;box-shadow:none} .hint{display:none} }
+</style>
+</head>
+<body>
+
+<div class="hint">Print this page (Ctrl&nbsp;+&nbsp;P) on one sheet of letter paper &mdash; or choose &ldquo;Save as PDF&rdquo; to email it. Leave margins at Default and turn on &ldquo;Background graphics&rdquo; so the colored bars print.</div>
+
+<div class="sheet">
+
+  <div class="top">
+    <img src="smc-logo.png" alt="Senior Men's Club seal">
+    <div>
+      <div class="club">Wilmington Senior Men&rsquo;s Club</div>
+      <h1>Our Annual Dinner, <em>by the water.</em></h1>
+      <div class="when">Saturday, October 17, 2026 &nbsp;&middot;&nbsp; 4:00&ndash;7:30 PM
+        <span>&nbsp;&middot;&nbsp; A private waterfront home in Wilmington &nbsp;&middot;&nbsp; Rain or shine</span></div>
+    </div>
+  </div>
+
+  <p class="pitch">An oyster roast and cocktails. Live music and a little magic. A seated dinner overlooking the water with the
+    friends who make this club special. <b>Come with your spouse or on your own &mdash; and make an evening of it.</b></p>
+
+  <div class="highlights">
+    <div class="hl"><b>Oyster roast &amp; cocktails</b> <span>&mdash; oysters, hors d&rsquo;oeuvres and a drink by the water.</span></div>
+    <div class="hl"><b>Seated waterfront dinner</b> <span>&mdash; served at the table, no buffet line.</span></div>
+    <div class="hl"><b>Live band</b> <span>&mdash; music that still welcomes conversation.</span></div>
+    <div class="hl"><b>Roaming magic</b> <span>&mdash; Neal Chamberlain, right at your table.</span></div>
+    <div class="hl"><b>&ldquo;My First Car&rdquo; game</b> <span>&mdash; match the car to the member.</span></div>
+    <div class="hl"><b>Putting challenge &amp; photos</b> <span>&mdash; a small prize and bragging rights.</span></div>
+  </div>
+
+  <div class="pricebar">
+    <div class="amt">$25 per person</div>
+    <div class="lim">Limited to 100 tickets &mdash; reserve early</div>
+  </div>
+
+  <div class="formhead">
+    <h2>Please complete and return this form</h2>
+    <div class="sub">Please print clearly</div>
+  </div>
+
+  <div class="row">
+    <div class="fld"><label>Your name</label><div class="line"></div></div>
+    <div class="fld" style="flex:.7"><label>Phone</label><div class="line"></div></div>
+    <div class="fld" style="flex:.9"><label>Email <span class="opt">(optional)</span></label><div class="line"></div></div>
+  </div>
+
+  <div class="panel">
+    <div class="two">
+      <div>
+        <div class="ttl">Will you join us?</div>
+        <div class="choices big">
+          <div class="ck"><span class="box"></span>Yes, I&rsquo;ll be there</div>
+          <div class="ck"><span class="box"></span>Sorry, I can&rsquo;t make it</div>
+        </div>
+      </div>
+      <div>
+        <div class="ttl">How many are coming?</div>
+        <div class="choices big">
+          <div class="ck"><span class="box"></span>Just me &mdash; 1 ticket</div>
+          <div class="ck"><span class="box"></span>Me &amp; my guest &mdash; 2 tickets</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:6px"><label>Spouse or guest&rsquo;s name <span class="opt">(if two tickets)</span></label><div class="line"></div></div>
+  </div>
+
+  <div class="panel">
+    <div class="ttl">Dinner choice &mdash; check one per person <span class="opt">(salad, sides, bread, dessert &amp; coffee included)</span></div>
+    <div class="two">
+      <div>
+        <div style="font-size:9.5pt;font-weight:600;margin-bottom:2px">Your entr&eacute;e</div>
+        <div class="choices">
+          <div class="ck"><span class="box"></span>Beef tenderloin</div>
+          <div class="ck"><span class="box"></span>Fish</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:9.5pt;font-weight:600;margin-bottom:2px">Your guest&rsquo;s entr&eacute;e</div>
+        <div class="choices">
+          <div class="ck"><span class="box"></span>Beef tenderloin</div>
+          <div class="ck"><span class="box"></span>Fish</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-bottom:4px">
+    <div class="fld" style="flex:.5"><label>Car year</label><div class="line"></div></div>
+    <div class="fld" style="flex:.6"><label>Car make</label><div class="line"></div></div>
+    <div class="fld" style="flex:.6"><label>Car model</label><div class="line"></div></div>
+    <div class="fld" style="flex:1.15"><label>Dietary or seating requests <span class="opt">(optional)</span></label><div class="line"></div></div>
+  </div>
+  <div class="carhint">&ldquo;My First Car&rdquo; is optional &mdash; model years 1940&ndash;1990. We&rsquo;ll put it on display and let everyone guess whose it was.</div>
+
+  <div class="total">
+    <div class="calc"><span class="blank"></span> people &nbsp;&times;&nbsp; $25 &nbsp;=&nbsp; $<span class="blank wide"></span></div>
+    <div style="flex:1">
+      <div class="ttl" style="margin-bottom:3px">Payment enclosed</div>
+      <div class="choices">
+        <div class="ck"><span class="box"></span>Check <span class="opt">(payable to <b>Senior Men&rsquo;s Club</b>)</span></div>
+        <div class="ck"><span class="box"></span>Cash</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="returnbox">
+    <div class="hd">How to return this form</div>
+    <p>Bring it with your payment to any <b>weekly club meeting</b> and hand it to the treasurer &mdash; or mail it to:
+       <span class="blank" style="min-width:2.8in"></span></p>
+    <p class="note">Please return by <b>Saturday, October 10</b> so we can confirm your seat and dinner choice. Seats are limited to 100
+       and reserved in the order payments are received. <b>Please do not write card numbers on this form.</b></p>
+  </div>
+
+  <div class="foot">
+    <div>Questions, dietary requests or help with arrangements? <b>events@seniormensclub.org</b></div>
+    <div>Prefer to pay by card? Register online at <b>seniormensclub.org</b></div>
+  </div>
+
+</div>
+</body>
+</html>
